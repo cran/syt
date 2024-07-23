@@ -9,6 +9,7 @@
 #' @return The number of semistandard Young tableaux with shape \code{lambda} 
 #'   and filled with integers between \code{1} and \code{n}.
 #' @export
+#' @seealso \code{\link{KostkaNumber}}.
 #'
 #' @examples
 #' count_ssytx(c(4, 3, 3, 2), 5)
@@ -43,12 +44,14 @@ count_ssytx <- function(lambda, n) {
 #' @return List of all semistandard Young tableaux with shape \code{lambda} 
 #'   and filled with integers between \code{1} and \code{n}.
 #' @export
+#' @seealso \code{\link{ssytx_withGivenShapeAndWeight}}.
 #'
 #' @examples
 #' ssytx <- all_ssytx(c(2, 1), 3)
 #' lapply(ssytx, prettyTableau)
 all_ssytx <- function(lambda, n) {
   lambda <- checkPartition(lambda)
+  stopifnot(isPositiveInteger(n))
   row <- function(n, len, prev, xxs) {
     if(len == 0L) {
       list(integer(0L))
@@ -76,4 +79,26 @@ all_ssytx <- function(lambda, n) {
     }
   }
   worker(rep(0L, lambda[1L]), lambda)
+}
+
+#' @title Semistandard Young tableaux with given shape and weight
+#' @description Enumeration of all semistandard Young tableaux with a given 
+#'   shape and a given weight. The \emph{weight} of a tableau is the 
+#'   vector whose \eqn{i}-th element is the number of occurrences of \eqn{i} 
+#'   in this tableau.
+#' 
+#' @param lambda integer partition, the shape
+#' @param weight integer vector, the weight
+#'
+#' @return List of all semistandard Young tableaux with shape \code{lambda} 
+#'   and weight \code{weight}.
+#' @export
+#' @seealso \code{\link{all_ssytx}}.
+#'
+#' @examples
+#' ssytx <- ssytx_withGivenShapeAndWeight(c(4, 1), c(0, 2, 1, 1, 1))
+#' lapply(ssytx, prettyTableau)
+ssytx_withGivenShapeAndWeight <- function(lambda, weight) {
+  GTpatterns <- GelfandTsetlinPatterns(lambda, weight)
+  lapply(GTpatterns, .GTpatternToTableau)
 }

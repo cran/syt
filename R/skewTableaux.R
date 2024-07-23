@@ -2,8 +2,8 @@ diffSequence <- function(x) {
   c(diff(-x), x[length(x)])
 }
 
-mkSkewPartition <- function(skewpart) {
-  lapply(skewpart, function(row) {
+mkSkewTableau <- function(skewTableau) {
+  lapply(skewTableau, function(row) {
     offset <- row[[1L]]
     c(rep(NA_integer_, offset), row[[2L]])
   })
@@ -22,6 +22,8 @@ mkSkewPartition <- function(skewpart) {
 #'   partition defined by \code{lambda} and \code{mu} and with maximum entry 
 #'   \code{n}.
 #' @export
+#' @seealso \code{\link{all_ssytx}},
+#'   \code{\link{skewTableauxWithGivenShapeAndWeight}}.
 #'
 #' @examples
 #' ssstx <- all_ssSkewTableaux(c(4, 3, 1), c(2, 2), 2)
@@ -67,12 +69,37 @@ all_ssSkewTableaux <- function(lambda, mu, n) {
   }
   as <- c(as.integer(mu), rep(0L, length(lambda) - length(mu)))
   bs <- as.integer(lambda) - as
-  if(any(bs) < 0L) {
+  if(any(bs < 0L)) {
     stop("The partition `mu` is not a subpartition of the partition `lambda`.")
   }
   ds <- diffSequence(as)
   results <- worker(as, bs, ds, rep(1L, bs[1L]))
-  lapply(results, mkSkewPartition)
+  lapply(results, mkSkewTableau)
+}
+
+#' @title Skew semistandard tableaux with given shape and weight
+#' @description Enumeration of all skew semistandard tableaux with a given 
+#'   shape and a given weight. The \emph{weight} of a tableau is the 
+#'   vector whose \eqn{i}-th element is the number of occurrences of \eqn{i} 
+#'   in this tableau.
+#' 
+#' @param lambda,mu integer partitions defining the skew partition: 
+#'   \code{lambda} is the outer partition and \code{mu} is the inner partition 
+#'   (so \code{mu} must be a subpartition of \code{lambda})
+#' @param weight integer vector, the weight
+#'
+#' @return List of all skew semistandard tableaux whose shape is the skew 
+#'   partition defined by \code{lambda} and \code{mu} and whose weight is 
+#'   \code{weight}.
+#' @export
+#'
+#' @examples
+#' ssstx <- skewTableauxWithGivenShapeAndWeight(c(3, 1, 1), c(2), c(1, 1, 1))
+#' lapply(ssstx, prettySkewTableau)
+skewTableauxWithGivenShapeAndWeight <- function(lambda, mu, weight) {
+  skewGTpatterns <- 
+    skewGelfandTsetlinPatterns(lambda, mu, removeTrailingZeros(weight))
+  lapply(skewGTpatterns, .skewGTpatternToTableau)
 }
 
 #' @title Check whether a tableau is a skew tableau
@@ -211,8 +238,7 @@ dualSkewTableau <- function(skewTableau) {
   axs <- lapply(seq_along(offsets), function(i) {
     list(offsets[[i]], contents[[i]])
   })
-  skewpart <- go(axs)
-  mkSkewPartition(skewpart)
+  mkSkewTableau(go(axs))
 }
 
 #' @title Check whether a skew tableau is semistandard

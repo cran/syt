@@ -1,3 +1,31 @@
+# syt 0.5.0
+
+* New function `GelfandTsetlinPatterns`, to enumerate the Gelfand-Tsetlin 
+patterns defined by a given integer partition and a given weight.
+
+* New function `ssytx_withGivenShapeAndWeight`, to enumerate the semistandard 
+Young tableaux with a given shape and a given weight.
+
+* New function `skewGelfandTsetlinPatterns`, to enumerate the Gelfand-Tsetlin 
+patterns defined by a given skew integer partition and a given weight.
+
+* New function `skewTableauxWithGivenShapeAndWeight`, to enumerate the skew
+semistandard Young tableaux with a given shape and a given weight.
+
+* New function `skewKostkaNumbers`, to get the Kostka numbers associated to a
+given skew partition.
+
+* New function `KostkaNumbersWithGivenMu`, to get the Kostka numbers 
+`K(lambda, mu)` for a given partition `mu`.
+
+* New function `KostkaNumbersWithGivenLambda`, to get the Kostka numbers 
+`K(lambda, mu)` for a given partition `lambda`.
+
+* New function `KostkaNumbers`, to get all the Kostka numbers 
+`K(lambda, mu)` for all partitions `lambda` and `mu` of a given weight.
+
+
+
 # syt 0.4.0
 
 * New functions for general tableaux.

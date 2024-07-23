@@ -2,7 +2,7 @@
 % Please edit documentation in R/Kostka.R
 \name{KostkaNumber}
 \alias{KostkaNumber}
-\title{Kostka numbers}
+\title{Kostka number}
 \usage{
 KostkaNumber(lambda, mu)
 }
@@ -23,7 +23,7 @@ The Kostka number \eqn{K(\lambda,\mu)} is the number of semistandard
   Young tableaux with shape \eqn{\lambda} and weight \eqn{\mu}. It does 
   not depend on the order of the elements of \eqn{\mu} (so one can always 
   take an integer partition for \eqn{\mu}). The \emph{weight} is the 
-  vector whose \eqn{i}-th element is the number of occurences of \eqn{i} 
+  vector whose \eqn{i}-th element is the number of occurrences of \eqn{i} 
   in the tableau.
 }
 \examples{
@@ -31,4 +31,12 @@ KostkaNumber(c(3,2), c(1,1,1,2))
 KostkaNumber(c(3,2), c(1,1,2,1))
 KostkaNumber(c(3,2), c(1,2,1,1))
 KostkaNumber(c(3,2), c(2,1,1,1))
+lambda <- c(4, 3, 1)
+mu <- rep(1, sum(lambda))
+KostkaNumber(lambda, mu) == count_sytx(lambda) # should be TRUE
+}
+\seealso{
+\code{\link{KostkaNumbers}}, \code{\link{KostkaNumbersWithGivenMu}}, 
+  \code{\link{KostkaNumbersWithGivenLambda}}, 
+  \code{\link{skewKostkaNumbers}}.
 }
